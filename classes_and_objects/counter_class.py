@@ -89,3 +89,61 @@ Explanation:
 =================================================
 
 """
+
+class Counter:
+    """A class demonstrating instance vs class attributes."""
+    
+    # CLASS ATTRIBUTE: Shared by every single object created from this class
+    total = 0
+
+    def __init__(self, name):
+        self.name = name
+        # INSTANCE ATTRIBUTE: Belongs only to this specific object
+        self.count = 0
+
+    def increment(self, step=1):
+        # Increment the object's personal counter
+        self.count += step
+        # Increment the shared global counter
+        Counter.total += step
+
+    def reset(self):
+        # Reset the object's personal counter, but leave the global one alone
+        self.count = 0
+
+    def __str__(self):
+        return f"{self.name}: count={self.count}"
+
+    @staticmethod
+    def show_total():
+        # A static method is a great way to access class attributes cleanly
+        return Counter.total
+
+
+# --- Driver Code ---
+
+# 1. Create three separate counters
+c1 = Counter("clicks")
+c2 = Counter("views")
+c3 = Counter("downloads")
+
+# 2. Increment them differently
+for _ in range(3):
+    c1.increment()
+
+for _ in range(5):
+    c2.increment()
+
+# Using the step parameter to jump by 10
+c3.increment(10)
+
+# 3. Reset one instance
+c1.reset()
+
+# 4. Print each object (triggers __str__)
+print(c1)
+print(c2)
+print(c3)
+
+# 5. Print the overall shared class total
+print(f"Total across all counters: {Counter.show_total()}")

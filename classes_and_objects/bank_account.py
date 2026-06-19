@@ -83,3 +83,63 @@ Explanation:
 =================================================
 
 """
+
+class BankAccount:
+    """A simple class representing a bank account."""
+
+    def __init__(self, name, account_number, opening_balance=0):
+        # Validate the opening balance
+        if opening_balance < 0:
+            print(f"Opening balance cannot be negative. Setting balance to $0 for {name}.")
+            self.balance = 0
+        else:
+            self.balance = opening_balance
+            
+        # Store the account holder's details
+        self.name = name
+        self.account_number = account_number
+
+    def deposit(self, amount):
+        # Reject invalid deposit amounts
+        if amount <= 0:
+            print(f"Deposit amount must be > 0 (got {amount})")
+        else:
+            self.balance += amount
+
+    def withdraw(self, amount):
+        # Reject invalid withdrawal amounts
+        if amount <= 0:
+            print(f"Withdraw amount must be > 0 (got {amount})")
+        # Reject overdrafts
+        elif amount > self.balance:
+            print(f"Insufficient funds for {self.name} (balance={self.balance}, asked={amount})")
+        # Process valid withdrawal
+        else:
+            self.balance -= amount
+
+    def get_balance(self):
+        return self.balance
+
+    def __str__(self):
+        # This controls what gets printed when you run print(account_object)
+        return f"Account[{self.account_number} - {self.name}]: ${self.balance}"
+
+
+# --- Driver Code (Testing the Class) ---
+
+# 1. Create at least two accounts
+a1 = BankAccount("Alice", "001", 500)
+a2 = BankAccount("Bob", "002")  # opening_balance defaults to 0
+
+# 2. Perform valid operations
+a1.deposit(200)
+a1.withdraw(100)
+a2.deposit(300)
+
+# 3. Perform invalid operations to trigger the rejection messages
+a1.withdraw(2000)  # Overdraft attempt
+a2.deposit(-50)    # Negative deposit attempt
+
+# 4. Print each account using print()
+print(a1)
+print(a2)
